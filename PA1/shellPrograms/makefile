@@ -35,5 +35,5 @@ target_checkdaemon: shellCheckDaemon_code.c
 	$(CC) shellCheckDaemon_code.c -o checkdaemon 
 
 clean:
-	$(REMOVE) find display listdirall listdir countline daemonize
+	$(REMOVE) find display listdirall listdir countline summond checkdaemon
 
