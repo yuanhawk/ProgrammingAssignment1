@@ -58,7 +58,7 @@ int shellDisplayFile(char** args);
 int shellCountLine(char** args);
 int shellListDir(char** args);
 int shellListDirAll(char** args);
-int shellFind(char** args);
+int shellFind(char** args);Oh
 int shellSummond(char** args);
 int shellCheckDaemon(char** args);
 
