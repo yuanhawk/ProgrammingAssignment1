@@ -302,19 +302,19 @@ void shellLoop(void)
   char **args; // to tokenize them as arguments separated by spaces
   int status;  // to tell the shell program whether to terminate shell or not
 
+
   /** TASK 5 **/
-  //write a loop where you do the following:
+  //write a loop where you do the following: 
 
   // 1. print the message prompt
   // 2. clear the buffer and move the output to the console using fflush
-  // 3. clear the buffer to accept a new string in readLine()
-  // 4. invoke shellReadLine() and store the output at line
-  // 5. invoke shellTokenizeInput(line) and store the output at args**
-  // 6. execute the tokens using shellExecuteInput(args)
+  // 3. invoke shellReadLine() and store the output at line
+  // 4. invoke shellTokenizeInput(line) and store the output at args**
+  // 5. execute the tokens using shellExecuteInput(args)
 
-  // 7. free memory location containing the strings of characters
-  // 8. free memory location containing char* to the first letter of each word in the input string
-  // 9. check return value of shellExecuteInput. If 1, continue the loop (point 1) again and prompt for another input. Else, exit shell. 
+  // 6. free memory location containing the strings of characters
+  // 7. free memory location containing char* to the first letter of each word in the input string
+  // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell. 
 
 
 }
