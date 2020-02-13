@@ -8,7 +8,13 @@ int shellDisplayFile_code(char** args)
     FILE *fp;
     char buf[1000];
 
-    fp =fopen(args[1],"r");
+    if (args[1] != NULL){
+         fp =fopen(args[1],"r");
+    }
+    else{
+        printf("Please supply a file name\n");
+        return 1;
+    }
 
     if (!fp){
     	printf("CSEShell: File doesn't exist.\n");
