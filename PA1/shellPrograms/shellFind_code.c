@@ -58,7 +58,7 @@ int shellFind_code(char** args){
                 int path_length;
                 char path[PATH_MAX];
  
-                path_length = snprintf (path, PATH_MAX,
+                path_length = snprintf (path, 1024,
                                         "%s/%s", dir_name, d_name);
 
                 if (path_length >= PATH_MAX) {

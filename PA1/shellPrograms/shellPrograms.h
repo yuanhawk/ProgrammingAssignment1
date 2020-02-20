@@ -18,6 +18,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <sys/resource.h>
+#define _GNU_SOURCE
 
 
 #define SHELL_BUFFERSIZE 256
