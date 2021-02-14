@@ -227,14 +227,60 @@ int shellUsage(char **args) {
  */
 int shellExecuteInput(char **args) {
     /** TASK 3 **/
+    pid_t pid;
+    int fd[2], child_val;
+    int val = 0;
 
     // 1. Check if args[0] is NULL. If it is, an empty command is entered, return 1
+    if (args[0] == NULL) return 1;
+
     // 2. Otherwise, check if args[0] is in any of our builtin_commands, and that it is NOT cd, help, exit, or usage.
-    // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
-    // 4. For the child process, execute the appropriate functions depending on the command in args[0]. Pass char ** args to the function.
-    // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
-    // 6. Return the child's return value to the caller of shellExecuteInput
+    // Check if the commands exist in the command list
+    for (int i = 0; i < numOfBuiltinFunctions(); i++) {
+        if (strcmp(args[0], builtin_commands[i]) == 0) { // if args[0] == builtin_commands
+            pipe(fd);
+
+            // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
+            pid = fork();
+            printf("pid: %d\n", pid);
+
+            if (pid < 0)
+            {
+                fprintf(stderr, "Fork has failed. Exiting now");
+                return 1; // exit error
+            }
+            // 4. For the child process, execute the appropriate functions depending on the command in args[0]. Pass char ** args to the function.
+            else if (pid == 0)
+            {
+                fprintf(stderr, "Fork works, waiting for child!\n");
+                close(fd[0]);
+                child_val = builtin_commandFunc[i](args);
+                write(fd[1], &child_val, sizeof(child_val));
+                printf("Child send value: %d\n", child_val);
+
+                // close the write descriptor
+                close(fd[1]);
+
+                exit(0);
+            }
+            else
+            {
+                wait(NULL);
+                close(fd[1]);
+                // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
+                read(fd[0], &val, sizeof(val));
+                // 6. Return the child's return value to the caller of shellExecuteInput
+                printf("Parent received value: %d\n", val);
+
+                // // close the read descriptor
+                close(fd[0]);
+                return val;
+            }
+        }
+    }
+
     // 7. If args[0] is not in builtin_command, print out an error message to tell the user that command doesn't exist and return 1
+    printf("Command does not exist");
 
     return 1;
 }
@@ -287,7 +333,7 @@ char **shellTokenizeInput(char *line) {
         int i = 1;
         // 3. Tokenize the *line using strtok() function
         while (token != NULL) {
-            printf("%s\n", token);
+//            printf("%s\n", token);
             token = strtok(NULL, s);
             token_positions[i] = token;
             i++;
@@ -343,6 +389,8 @@ int main(int argc, char **argv)
     char **args = shellTokenizeInput(line);
     printf("The first token is %s \n", args[0]);
     printf("The second token is %s \n", args[1]);
+
+    shellExecuteInput(args);
 
     free(line);
     free(args);
