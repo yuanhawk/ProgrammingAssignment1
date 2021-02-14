@@ -259,8 +259,7 @@ int shellUsage(char **args) {
 int shellExecuteInput(char **args) {
     /** TASK 3 **/
     pid_t pid;
-    int fd[2], child_val;
-    int val = 0;
+    int exit_status, status;
 
     // 1. Check if args[0] is NULL. If it is, an empty command is entered, return 1
     if (args[0] == NULL) return 1;
@@ -269,43 +268,22 @@ int shellExecuteInput(char **args) {
     // Check if the commands exist in the command list
     for (int i = 0; i < numOfBuiltinFunctions(); i++) {
         if (strcmp(args[0], builtin_commands[i]) == 0) { // if args[0] == builtin_commands
-            pipe(fd);
+            if (i < 4) return builtin_commandFunc[i](args);
 
             // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
-            pid = fork();
-//            printf("pid: %d\n", pid);
-
-            if (pid < 0)
-            {
-                fprintf(stderr, "Fork has failed. Exiting now");
-                return 1; // exit error
-            }
-            // 4. For the child process, execute the appropriate functions depending on the command in args[0]. Pass char ** args to the function.
-            else if (pid == 0)
-            {
-                fprintf(stderr, "Fork works, waiting for child!\n");
-                close(fd[0]);
-                child_val = builtin_commandFunc[i](args);
-                write(fd[1], &child_val, sizeof(child_val));
-//                printf("Child send value: %d\n", child_val);
-
-                // close the write descriptor
-                close(fd[1]);
-
-                exit(0);
-            }
-            else
-            {
-                wait(NULL);
-                close(fd[1]);
-                // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
-                read(fd[0], &val, sizeof(val));
-                // 6. Return the child's return value to the caller of shellExecuteInput
-//                printf("Parent received value: %d\n", val);
-
-                // // close the read descriptor
-                close(fd[0]);
-                return val;
+            switch (pid = fork()) {
+                case -1:
+                    fprintf(stderr, "Fork has failed. Exiting now");
+                    return 1; // exit error
+                case 0:
+                    fprintf(stderr, "Fork works, waiting for child!\n");
+                    status = builtin_commandFunc[i](args);
+                    // close the write descriptor
+                    exit(0);
+                default:
+                    exit_status = waitpid(pid, &status, WUNTRACED);
+                    if (WIFEXITED(status)) exit_status = WEXITSTATUS(status);
+                    return exit_status;
             }
         }
     }
@@ -350,7 +328,7 @@ char *shellReadLine(void) {
 **/
 
 char **shellTokenizeInput(char *line) {
-    printf("Address if *line is %s\n", line);
+//    printf("Address if *line is %s\n", line);
 
     const char s[1] = " ";
     /** TASK 2 **/
@@ -381,27 +359,49 @@ char **shellTokenizeInput(char *line) {
   tokenize it, and then executes the command
  */
 void shellLoop(void) {
+
     //instantiate local variables
     char *line;  // to accept the line of string from user
     char **args; // to tokenize them as arguments separated by spaces
     int status;  // to tell the shell program whether to terminate shell or not
 
-    shellReadLine();
-
     /** TASK 5 **/
     //write a loop where you do the following:
 
     // 1. print the message prompt
+    printf("CSEShell> ");
+
     // 2. clear the buffer and move the output to the console using fflush
     // 3. invoke shellReadLine() and store the output at line
+    // Q1
+    line = shellReadLine();
+//    printf("The fetched line is: %s \n", line);
+
     // 4. invoke shellTokenizeInput(line) and store the output at args**
+    // Q2
+    args = shellTokenizeInput(line);
+//    printf("The first token is %s \n", args[0]);
+//    printf("The second token is %s \n", args[1]);
+
     // 5. execute the tokens using shellExecuteInput(args)
+    // Q3
+    status = shellExecuteInput(args);
 
     // 6. free memory location containing the strings of characters
+    free(line);
+
     // 7. free memory location containing char* to the first letter of each word in the input string
+    free(args);
+
     // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell.
-
-
+    if (status == 1)
+    {
+        shellLoop();
+    }
+    else
+    {
+        exit(0);
+    }
 }
 
 int main(int argc, char **argv)
@@ -410,22 +410,7 @@ int main(int argc, char **argv)
     printf("Shell Run successful. Running now: \n");
 
     // Run command loop
-//  shellLoop();
-
-    // Q1
-    char *line = shellReadLine();
-    printf("The fetched line is: %s \n", line);
-
-    // Q2
-    char **args = shellTokenizeInput(line);
-    printf("The first token is %s \n", args[0]);
-    printf("The second token is %s \n", args[1]);
-
-    // Q3
-    shellExecuteInput(args);
-
-    free(line);
-    free(args);
+    shellLoop();
 
     return 0;
 }
