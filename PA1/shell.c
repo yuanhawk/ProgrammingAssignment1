@@ -6,12 +6,19 @@
 int shellFind(char **args) {
 
     printf("shellFind is called!\n");
+    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'find' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/find", args);
+
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: No file of %s found\n", args[1]);
+    }
     // 5. return 1 to the caller of shellFind if execvp fails to allow loop to continue
 
     return 1;
@@ -22,12 +29,20 @@ int shellFind(char **args) {
  */
 int shellDisplayFile(char **args) {
     printf("shellDisplayFile is called!\n");
+    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'display' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/display", args);
+
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: File doesn't exist.\n");
+    }
+
     // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
 
     return 1;
@@ -39,12 +54,20 @@ int shellDisplayFile(char **args) {
 int shellListDirAll(char **args) {
 
     printf("shellListDirAll is called!\n");
+    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'listdirall' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/listdir", args);
+
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: Empty directory found\n");
+    }
+
     // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
 
     return 1;
@@ -56,11 +79,19 @@ int shellListDirAll(char **args) {
 int shellListDir(char **args) {
     printf("shellListDir is called!\n");
 
+    int val;
+
     /** TASK 4 **/
     // 1. Execute the binary program 'listdir' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/listdir", args);
+
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: Empty directory found\n");
+    }
     // 5. return 1 to the caller of shellListDir
 
     return 1;
@@ -242,7 +273,7 @@ int shellExecuteInput(char **args) {
 
             // 3. If conditions in (2) are satisfied, perform fork(). Check if fork() is successful.
             pid = fork();
-            printf("pid: %d\n", pid);
+//            printf("pid: %d\n", pid);
 
             if (pid < 0)
             {
@@ -256,7 +287,7 @@ int shellExecuteInput(char **args) {
                 close(fd[0]);
                 child_val = builtin_commandFunc[i](args);
                 write(fd[1], &child_val, sizeof(child_val));
-                printf("Child send value: %d\n", child_val);
+//                printf("Child send value: %d\n", child_val);
 
                 // close the write descriptor
                 close(fd[1]);
@@ -270,7 +301,7 @@ int shellExecuteInput(char **args) {
                 // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
                 read(fd[0], &val, sizeof(val));
                 // 6. Return the child's return value to the caller of shellExecuteInput
-                printf("Parent received value: %d\n", val);
+//                printf("Parent received value: %d\n", val);
 
                 // // close the read descriptor
                 close(fd[0]);
@@ -280,7 +311,7 @@ int shellExecuteInput(char **args) {
     }
 
     // 7. If args[0] is not in builtin_command, print out an error message to tell the user that command doesn't exist and return 1
-    printf("Command does not exist");
+    printf("Invalid command received. Type help to see what commands are implemented.\n");
 
     return 1;
 }
@@ -390,6 +421,7 @@ int main(int argc, char **argv)
     printf("The first token is %s \n", args[0]);
     printf("The second token is %s \n", args[1]);
 
+    // Q3
     shellExecuteInput(args);
 
     free(line);
