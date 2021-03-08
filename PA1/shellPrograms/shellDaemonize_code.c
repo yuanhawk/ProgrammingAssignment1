@@ -28,7 +28,6 @@ static int create_daemon()
             fprintf(stderr, "Fork has failed. Exiting now");
             return 1; // exit error
         case 0:
-            fprintf(stderr, "Fork works, waiting for child!\n");
             // 3. On child process (this is intermediate process), call setsid() so that the child becomes session leader to lose the controlling TTY
             setsid();
             // 4. Ignore SIGCHLD, SIGHUP
@@ -41,7 +40,6 @@ static int create_daemon()
                     fprintf(stderr, "Fork has failed. Exiting now");
                     return 1; // exit error
                 case 0:
-                    fprintf(stderr, "Fork works, waiting for child!\n");
                     // 6. Child process (the daemon) set new file permissions using umask(0). Daemon's PPID at this point is 1 (the init)
                     umask(0);
                     // 7. Change working directory to root

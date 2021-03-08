@@ -14,16 +14,13 @@ int shellCountLine_code(char **args)
     // 1. Given char** args, open file in READ mode based on the filename given in args[1] using fopen()
     FILE *fp = fopen(args[1], "r");
     // 2. Check if file exists by ensuring that the FILE* fp returned by fopen() is not NULL
-    if (fp == NULL)
+    if (fp != NULL)
     {
-        fprintf(stderr, "Error opening file '%s'\n", args[1]);
-        return EXIT_FAILURE;
+        while (getline(&buffer, &size, fp) >= 0) {
+            // 4. Loop, as long as getline() does not return -1, keeps reading and increment the count
+            count++;
+        };
     }
-
-    while (getline(&buffer, &size, fp) >= 0) {
-        // 4. Loop, as long as getline() does not return -1, keeps reading and increment the count
-        count++;
-    };
 
     free(buffer);
     buffer = NULL;

@@ -151,11 +151,17 @@ int shellSummond(char **args) {
 int shellCheckDaemon(char **args) {
     printf("shellCheckDaemon is called!\n");
 
+    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'checkdaemon' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/checkdaemon", args);
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: Checkdaemon error\n");
+    }
     // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
 
     return 1;
@@ -292,7 +298,7 @@ int shellExecuteInput(char **args) {
                     fprintf(stderr, "Fork works, waiting for child!\n");
                     status = builtin_commandFunc[i](args);
                     // close the write descriptor
-                    exit(EXIT_SUCCESS);
+                    exit(1);
                 default:
                     exit_status = waitpid(pid, &status, WUNTRACED);
                     if (WIFEXITED(status)) exit_status = WEXITSTATUS(status);
