@@ -19,7 +19,7 @@ int shellCountLine_code(char **args)
         while (getline(&buffer, &size, fp) >= 0) {
             // 4. Loop, as long as getline() does not return -1, keeps reading and increment the count
             count++;
-        };
+        }
     }
 
     free(buffer);

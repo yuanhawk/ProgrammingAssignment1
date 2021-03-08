@@ -6,16 +6,13 @@
 int shellFind(char **args) {
 
     printf("shellFind is called!\n");
-    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'find' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/find", args);
-
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/find", args) == -1)
     {
         printf("CSEShell: No file of %s found\n", args[1]);
     }
@@ -29,16 +26,13 @@ int shellFind(char **args) {
  */
 int shellDisplayFile(char **args) {
     printf("shellDisplayFile is called!\n");
-    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'display' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/display", args);
-
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/display", args) == -1)
     {
         printf("CSEShell: File doesn't exist.\n");
     }
@@ -54,16 +48,13 @@ int shellDisplayFile(char **args) {
 int shellListDirAll(char **args) {
 
     printf("shellListDirAll is called!\n");
-    int val;
 
     /** TASK 4 **/
     // 1. Execute the binary program 'listdirall' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/listdirall", args);
-
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/listdirall", args) == -1)
     {
         printf("CSEShell: Empty directory found\n");
     }
@@ -79,16 +70,12 @@ int shellListDirAll(char **args) {
 int shellListDir(char **args) {
     printf("shellListDir is called!\n");
 
-    int val;
-
     /** TASK 4 **/
     // 1. Execute the binary program 'listdir' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/listdir", args);
-
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/listdir", args) == -1)
     {
         printf("CSEShell: Empty directory found\n");
     }
@@ -104,15 +91,12 @@ int shellListDir(char **args) {
 int shellCountLine(char **args) {
     printf("shellCountLine is called!\n");
 
-    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'countline' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/countline", args);
-
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/countline", args) == -1)
     {
         printf("CSEShell: Line count error\n");
     }
@@ -127,14 +111,12 @@ int shellCountLine(char **args) {
 int shellSummond(char **args) {
     printf("shellDaemonize is called!\n");
 
-    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'summond' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/summond", args);
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/summond", args) == -1)
     {
         printf("CSEShell: Summond error\n");
     }
@@ -151,14 +133,12 @@ int shellSummond(char **args) {
 int shellCheckDaemon(char **args) {
     printf("shellCheckDaemon is called!\n");
 
-    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'checkdaemon' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/checkdaemon", args);
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
-    if (val == -1)
+    if (execvp("shellPrograms/checkdaemon", args) == -1)
     {
         printf("CSEShell: Checkdaemon error\n");
     }
