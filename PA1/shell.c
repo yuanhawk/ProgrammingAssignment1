@@ -58,7 +58,7 @@ int shellListDirAll(char **args) {
 
     /** TASK 4 **/
     // 1. Execute the binary program 'listdirall' in shellPrograms using execvp system call
-    val = execvp("shellPrograms/listdir", args);
+    val = execvp("shellPrograms/listdirall", args);
 
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
@@ -104,11 +104,18 @@ int shellListDir(char **args) {
 int shellCountLine(char **args) {
     printf("shellCountLine is called!\n");
 
+    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'countline' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/countline", args);
+
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: Line count error\n");
+    }
     // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
 
     return 1;
@@ -279,7 +286,7 @@ int shellExecuteInput(char **args) {
                     fprintf(stderr, "Fork works, waiting for child!\n");
                     status = builtin_commandFunc[i](args);
                     // close the write descriptor
-                    exit(0);
+                    exit(EXIT_SUCCESS);
                 default:
                     exit_status = waitpid(pid, &status, WUNTRACED);
                     if (WIFEXITED(status)) exit_status = WEXITSTATUS(status);
