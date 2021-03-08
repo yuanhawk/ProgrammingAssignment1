@@ -127,11 +127,17 @@ int shellCountLine(char **args) {
 int shellSummond(char **args) {
     printf("shellDaemonize is called!\n");
 
+    int val;
     /** TASK 4 **/
     // 1. Execute the binary program 'summond' in shellPrograms using execvp system call
+    val = execvp("shellPrograms/summond", args);
     // 2. Check if execvp is successful by checking its return value
     // 3. A successful execvp never returns, while a failed execvp returns -1
     // 4. Print some kind of error message if it returns -1
+    if (val == -1)
+    {
+        printf("CSEShell: Summond error\n");
+    }
     // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
 
     return 1;
